@@ -84,7 +84,7 @@
 
 					<ul>
 
-						<li><a href="pagos"><i class="glyphicon glyphicon-th-list"></i> Lista de Pagos</a></li>
+						<li><a href="pagos"><i class="glyphicon glyphicon-th-list"></i> Lista Pagos</a></li>
 
 					</ul>
 
@@ -92,11 +92,13 @@
 
 				<li class="principal">
 
-					<a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Configuración </a>
+					<a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Inventario </a>
 
 					<ul>
 
-						<li><a href="articulo"><i class="fa fa-tasks" aria-hidden="true"></i> Artículo </a></li>
+						<li><a href="articulo"><i class="fa fa-tasks" aria-hidden="true"></i> Articulos </a></li>
+						<li><a href="ing_articulos"><i class="fa fa-tasks" aria-hidden="true"></i> R. Ingresos </a></li>
+						<li><a href="sal_articulos"><i class="fa fa-tasks" aria-hidden="true"></i> R. Salidas </a></li>
 						<li><a href="inventario"><i class="fa fa-tasks" aria-hidden="true"></i> Inventario </a></li>
 
 					</ul>

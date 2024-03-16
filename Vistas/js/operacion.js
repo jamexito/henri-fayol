@@ -1,8 +1,8 @@
-var perfilOculto = $("#perfilOculto").val();
-// console.log("perfilOculto", perfilOculto);
+var darkcode = $("#darkcode").val();
+// console.log("darkcode", darkcode);
 
 $('.tablasPagos').DataTable( {
-    "ajax": "ajax/datatable-pagos.ajax.php?perfilOculto="+perfilOculto,
+    "ajax": "ajax/datatable-pagos.ajax.php?darkcode="+darkcode,
     "deferRender": true,
     "retrieve": true,
     "processing": true,    
@@ -30,7 +30,7 @@ $('.tablasPagos').DataTable( {
 	        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
 	    }
 	},
-	"pageLength": 20
+	//"pageLength": 20
 })
 
 
@@ -49,7 +49,7 @@ $(".tablas").on("click", ".btnImprimirComprobante", function(){
 })
 
 /*===============================================
-                ANULAR COMPROBANTE
+=              ANULAR COMPROBANTE              =
 ===============================================*/
 $(document).on("click", ".anularComprobante", function(){
 	
@@ -81,4 +81,66 @@ $(document).on("click", ".anularComprobante", function(){
 	})
 
 })
+/*============================================
+=            EXTRACT DATA PENSION            =
+============================================*/
+// $(document).on("change", "#idalumno", function(e){
+$("#idalumno").change(function (e) { 
+	e.preventDefault();
+	var idAlumno = $(this).val();
+	var datos = new FormData();
+	datos.append("idAlumno", idAlumno);
+
+	$.ajax({
+
+		url:"ajax/alumnos.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+		success: function(respuesta){
+			// console.log(respuesta[0]["meses"]);			
+			var mont = JSON.parse(respuesta[0]["meses"]);
+			var len = JSON.parse(respuesta[0]["meses"]).length;
+			
+			for( var i = 0; i<len; i++){
+				var mes = mont[i];
+				// console.log(mes);			
+				$("#mensualidad").append("<option value='"+i+"'>"+mes+"</option>");
+			}
+
+			$("#descuento").val(respuesta[0]["descuento"]);
+			$("#monto").val(respuesta[0]["pension_final"]);
+
+			$("#descuento").change(function() {
+				/* Act on the event */
+				var pension = Number(respuesta[0]["pension_final"]);
+				var descuento = Number($("#descuento").val() / 100);
+				var pension_final = Number(pension - (pension * descuento));
+
+				$("#monto").val(pension_final);
+			})
+		}
+
+	})
+});
+
+/*=============================================
+=      RESETEANDO LA INFO DEL MODAL           =
+=============================================*/
+$('.bs-registrar-pago-lg').on('hidden.bs.modal', function(){ 
+	// document.getElementById("pago").reset();
+	$(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+	$("label.error").remove();  //lo utilice para borrar la etiqueta de error del jquery validate
+});
+
+// function enviar_valores(){
+// 	if($('#idalumno').val()!=''){
+// 		$('#formRegister').submit();
+// 	}
+// }
+
+
 

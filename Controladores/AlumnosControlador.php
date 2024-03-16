@@ -1,5 +1,7 @@
 <?php 
 
+error_reporting(0);
+
 class AlumnosControlador
 {
 
@@ -18,123 +20,151 @@ class AlumnosControlador
 	}
 
 	/*======================================
+	=              VER ALUMNO              =
+	======================================*/	
+	static public function MostrarAlumnoC($item, $valor)
+	{
+		
+		$tablaBD = "alumnos";
+
+		$resultado = AlumnosModelo::MostrarAlumnoM($tablaBD, $item, $valor);
+
+		return $resultado;
+
+	}
+
+	/*======================================
 	=            CREAR Alumno            =
 	======================================*/
 	public function CrearAlumnoC()
-	{
-		
+	{				
 		if(isset($_POST["dni"]) && $_SESSION["rol"] == 1){
 
-			// if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nombres"]) &&
-			//    preg_match('/^[a-zA-Z0-9]+$/', $_POST["apellidos"]) &&
-			//    preg_match('/^[0-9]+$/', $_POST["dni"])){
+			// $meses = array();
+			$meses = '';
+			// var_dump($_POST['meses']);die();
+			foreach ($_POST['meses'] as $mes) 
+			{
+				$meses .= $mes.',';				
+			}			
+			$arr_mes = explode(",", substr($meses, 0, -1));
+			// var_dump($arr_mes);die();
+			// var_dump(json_encode($arr_mes));die();
+			/*=============================================
+			VALIDAR IMAGEN
+			=============================================*/
+
+			$ruta = "";
+
+			if(isset($_FILES["imagenIng"]["tmp_name"])){
+
+				list($ancho, $alto) = getimagesize($_FILES["imagenIng"]["tmp_name"]);
+
+				$nuevoAncho = 500;
+				$nuevoAlto = 500;
 
 				/*=============================================
-				VALIDAR IMAGEN
+				CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
 				=============================================*/
 
-				$ruta = "";
+				$directorio = "Vistas/img/alumnos/".$_POST["dni"];
 
-				if(isset($_FILES["imagenIng"]["tmp_name"])){
+				mkdir($directorio, 0755);
 
-					list($ancho, $alto) = getimagesize($_FILES["imagenIng"]["tmp_name"]);
+				/*=============================================
+				DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
+				=============================================*/
 
-					$nuevoAncho = 500;
-					$nuevoAlto = 500;
-
-					/*=============================================
-					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
-					=============================================*/
-
-					$directorio = "Vistas/img/alumnos/".$_POST["dni"];
-
-					mkdir($directorio, 0755);
+				if($_FILES["imagenIng"]["type"] == "image/jpeg"){
 
 					/*=============================================
-					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
+					GUARDAMOS LA IMAGEN EN EL DIRECTORIO
 					=============================================*/
 
-					if($_FILES["imagenIng"]["type"] == "image/jpeg"){
+					$aleatorio = mt_rand(100,999);
 
-						/*=============================================
-						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
-						=============================================*/
+					$ruta = "Vistas/img/alumnos/".$_POST["dni"]."/".$aleatorio.".jpg";
 
-						$aleatorio = mt_rand(100,999);
+					$origen = imagecreatefromjpeg($_FILES["imagenIng"]["tmp_name"]);						
 
-						$ruta = "Vistas/img/alumnos/".$_POST["dni"]."/".$aleatorio.".jpg";
+					$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
-						$origen = imagecreatefromjpeg($_FILES["imagenIng"]["tmp_name"]);						
+					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-
-						imagejpeg($destino, $ruta);
-
-					}
-
-					if($_FILES["imagenIng"]["type"] == "image/png"){
-
-						/*=============================================
-						GUARDAMOS LA IMAGEN EN EL DIRECTORIO
-						=============================================*/
-
-						$aleatorio = mt_rand(100,999);
-
-						$ruta = "Vistas/img/alumnos/".$_POST["dni"]."/".$aleatorio.".png";
-
-						$origen = imagecreatefrompng($_FILES["imagenIng"]["tmp_name"]);						
-
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-
-						imagepng($destino, $ruta);
-
-					}
+					imagejpeg($destino, $ruta);
 
 				}
 
-				date_default_timezone_set('America/Lima');
+				if($_FILES["imagenIng"]["type"] == "image/png"){
 
-        		$fecha_actual = date("d-m-Y h:i:s");
+					/*=============================================
+					GUARDAMOS LA IMAGEN EN EL DIRECTORIO
+					=============================================*/
 
-				$tablaBD = "alumnos";
+					$aleatorio = mt_rand(100,999);
 
-				$datos = array("dni"       		  => $_POST["dni"],
-							   "apellidos" 		  => $_POST["apellidos"],
-					           "nombres"   		  => $_POST["nombres"],
-					           "direccion" 		  => $_POST["direccion"],
-					           "telefono"  		  => $_POST["telefono"],
-					           "apoderado" 		  => $_POST["apoderado"],
-					           "aula_asignada"    => $_POST["aula"],
-					           "fecha_registro"   => $fecha_actual,
-					           "usuario_registro" => $_SESSION["usuario"],
-					           "foto"             => $ruta
-							);
+					$ruta = "Vistas/img/alumnos/".$_POST["dni"]."/".$aleatorio.".png";
 
-				$respuesta = AlumnosModelo::CrearAlumnoM($tablaBD, $datos);
+					$origen = imagecreatefrompng($_FILES["imagenIng"]["tmp_name"]);						
 
-				if ($respuesta == "ok") {
-					
-					echo '<script>
+					$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
 
-							window.location = "alumnos";
+					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
 
-						</script>';
-
-				}else{
-
-					echo '<script>
-
-							window.location = "inicio";
-
-						</script>';
+					imagepng($destino, $ruta);
 
 				}
 
-			// }
+			}
+
+			$pension = number_format($_POST["pension"]);
+
+			$descuento = number_format($_POST["descuento"]);
+
+			$pension_final = number_format($_POST["pago_final"]);
+
+			date_default_timezone_set('America/Lima');
+
+    		$fecha_actual = date("d-m-Y h:i:s");
+
+			$tablaBD = "alumnos";
+
+			$datos = array(
+						   "dni"       		  => $_POST["dni"],
+						   "apellidos" 		  => $_POST["apellidos"],
+				           "nombres"   		  => $_POST["nombres"],
+				           "direccion" 		  => $_POST["direccion"],
+				           "telefono"  		  => $_POST["telefono"],
+				           "apoderado" 		  => $_POST["apoderado"],
+				           "aula_asignada"    => $_POST["aula"],
+				           "meses"            => json_encode($arr_mes),
+				           "pension"    	  => $pension,
+				           "descuento"    	  => $descuento,
+				           "pension_final"    => $pension_final,
+				           "fecha_registro"   => $fecha_actual,
+				           "usuario_registro" => $_SESSION["usuario"],
+				           "foto"             => $ruta
+						);
+
+			$respuesta = AlumnosModelo::CrearAlumnoM($tablaBD, $datos);
+
+			if ($respuesta == "ok") {
+				
+				echo '<script>
+
+						window.location = "alumnos";
+
+					</script>';
+
+			}else{
+
+				echo '<script>
+
+						window.location = "inicio";
+
+					</script>';
+
+			}
 
 		}
 
@@ -148,8 +178,8 @@ class AlumnosControlador
 		if(isset($_POST["idAlumnoEA"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nombresEA"]) &&
-			   preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["apellidosEA"]) &&
-			   preg_match('/^[0-9]+$/', $_POST["dniEA"])){
+			   preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["apellidosEA"]) /*&&
+			   preg_match('/^[0-9]+$/', $_POST["dniEA"])*/){
 
 				// if (!empty($_POST["aulaN"])) {
 				// 	$aula = $_POST["aulaN"];
@@ -157,6 +187,26 @@ class AlumnosControlador
 				// 	$aula = $_POST["aulaEA"];
 				// }
 
+				if (!empty($_POST["EditMes"])) {
+					$arr_mes = explode(",", $_POST['EditMes']);					
+				}else{
+					$meses = '';
+					foreach ($_POST['mesesEdit'] as $mes) 
+					{
+						$meses .= $mes.',';				
+					}			
+					$arr_mes = explode(",", substr($meses, 0, -1));
+
+					$tablaEst = "alumnos";
+					$datosEst = array(
+						"estado" => 1,
+						"meses" => json_encode($arr_mes),
+						"idalumno" => $_POST["idAlumnoEA"]
+					);
+
+					$resultEstado = AlumnosModelo::EditarEstadoM($tablaEst,$datosEst);
+				}
+				// var_dump($arr_mes);die();
 				/*=============================================
 				VALIDAR IMAGEN
 				=============================================*/
@@ -235,16 +285,43 @@ class AlumnosControlador
 					}
 
 				}
+
+				$pensionEA = number_format($_POST["pensionEA"]);
+
+				$descuentoEA = number_format($_POST["descuentoEA"]);
+
+				$monto_descEA = $descuentoEA / 100;
+
+				$pension_finalEA = number_format($_POST["pension_finalEA"]);
+
+				if (!empty($descuentoEA)) 
+				{
+					
+					$pension_finalEA = $pensionEA - ($pensionEA * $monto_descEA);
+
+				}else{
+
+					$pensionEA = number_format($_POST["pensionEA"]);
+
+					$descuentoEA = number_format(0.00);
+
+					$pension_finalEA = number_format($_POST["pensionEA"]);
+
+				}
 				
 				$tablaBD = "alumnos";
 
 				$datos = array("idalumno"       => $_POST["idAlumnoEA"],
-							   "dni"        	=> $_POST["dniEA"],
+							   // "dni"        	=> $_POST["dniEA"],
 							   "apellidos"  	=> $_POST["apellidosEA"],
 							   "nombres"    	=> $_POST["nombresEA"],
 							   "direccion"  	=> $_POST["direccionEA"],
 							   "telefono"   	=> $_POST["telefonoEA"],
 							   "apoderado"  	=> $_POST["apoderadoEA"],
+							   "pension"        => $pensionEA,
+							   "meses"          => json_encode($arr_mes),
+							   "descuento"      => $descuentoEA,
+							   "pension_final"  => $pension_finalEA,
 							   "foto"           => $ruta
 							);
 
@@ -328,9 +405,18 @@ class AlumnosControlador
 				
 			$tablaBD = "alumnos";
 
-			$datos = array("idalumno" => $_POST["idAlumnoStatus"],
-						   "estado"   => $_POST["StatusAlumno"]
+			if ($_POST["StatusAlumno"] == 0) 
+			{
+				$datos = array("idalumno" => $_POST["idAlumnoStatus"],
+						   "estado"   => $_POST["StatusAlumno"],
+						   "meses"  => null
 						);
+			}else{
+				$datos = array("idalumno" => $_POST["idAlumnoStatus"],
+						   "estado"   => $_POST["StatusAlumno"],
+						   "meses"  => $_POST["mesesAlumnosE"]
+						);
+			}			
 
 			$respuesta = AlumnosModelo::EditarEstadoM($tablaBD, $datos);
 

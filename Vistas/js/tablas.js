@@ -2,7 +2,6 @@
 =            DATA TABLE            =
 ==================================*/
 $(".tablas").DataTable({
-	"pageLength": 15,
 	"language": {
 
 		"sProcessing":     "Procesando...",
@@ -32,6 +31,7 @@ $(".tablas").DataTable({
 	        "colvis": "Visibilidad"
 	    }
 
-	}
+	},
+	//"pageLength": 15
 
 })

@@ -76,9 +76,9 @@
 					/*BOTONES*/
 					if ($_SESSION["rol"] == 1) {
 						$boton =  '<button class="btn btn-primary btnEditarAlumno" idAlumno="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-edit-alumno" title="Editar"><i class="fa fa-edit"></i></button> 
-							<button class="btn btn-success btnVerAlumno" idAlumnoVer="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-info-alumno" title="Ver Información completa"><i class="fa fa-eye"></i></button>';					
+							<button class="btn btn-success btnVerAlumno" idAlumnoVer="'.$value["idalumno"].'" data-toggle="modal" data-target=".infoAlumno" title="Ver Información completa"><i class="fa fa-eye"></i></button>';					
 					}else{	
-						$boton =  '<button class="btn btn-success btnVerAlumno" idAlumnoVer="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-info-alumno" title="Ver Información completa"><i class="fa fa-eye"></i></button>';	
+						$boton =  '<button class="btn btn-success btnVerAlumno" idAlumnoVer="'.$value["idalumno"].'" data-toggle="modal" data-target=".infoAlumno" title="Ver Información completa"><i class="fa fa-eye"></i></button>';	
 					}
 
 					echo '<tr>
@@ -92,7 +92,6 @@
 						</tr>';
 				}
 						
-
 			?>						
 
 		</tbody>
@@ -302,9 +301,84 @@
 
 </div>
 
-<?php 
+<!--==================================
+=          VER INFO ALUMNO           =
+===================================-->
 
-// $borrarUsuario = new UsuariosControlador();
-// $borrarUsuario -> BorrarUsuarioC();
+<div class="modal fade infoAlumno" tabindex="-1" role="dialog">
+  	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">×</span></button>
+			</div>
+			<div class="modal-body">
 
-?>
+				<div class="col-md-12">
+					<div class="box box-widget widget-user">
+						<div class="widget-user-header bg-aqua-active">
+							<h2 class="widget-user-username" id="nombreAlumno"></h2>
+							<h4 class="widget-user-desc" id="apellidosAlumno"></h4>
+						</div>
+						<div class="widget-user-image">
+							<img class="img-circle" id="fotoAlumno" src="" alt="User Avatar">
+						</div>
+					<div class="box-footer">
+						<div class="row">
+							<div class="col-sm-4 border-right">
+								<div class="description-block">
+									<h4 class="description-header">DOCUMENTO</h4>
+									<span class="description-text" id="documentoAlumno"></span>
+								</div>
+							</div>
+							<div class="col-sm-4 border-right">
+								<div class="description-block">
+									<h4 class="description-header">TELEFONO</h4>
+									<span class="description-text" id="telefonoAlumno"></span>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="description-block">
+									<h4 class="description-header">AULA</h4>
+									<span class="description-text" id="aulaAlumno"></span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6 border-right">
+								<div class="description-block">
+									<h4 class="description-header">APODERADO</h4>
+									<span class="description-text" id="apoderadoAlumno"></span>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="description-block">
+									<h4 class="description-header">FECHA DE REGISTRO</h4>
+									<span class="description-text" id="registroAlumno"></span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4 border-right">
+								<div class="description-block">
+									<h4 class="description-header">DIRECCION</h4>
+								</div>
+							</div>
+							<div class="col-sm-8">
+								<div class="description-block">
+									<span class="description-text" id="direccionAlumno"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+			</div>
+		</div>
+  	</div>
+</div>

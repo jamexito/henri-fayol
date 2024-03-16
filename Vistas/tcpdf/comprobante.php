@@ -40,7 +40,7 @@
 	require "./code128.php";
 
 	$pdf = new PDF_Code128('P','mm','A4'); //L(horizontal) y P(vertical) 
-	$pdf->SetMargins(17,12,17);
+	$pdf->SetMargins(12,12,19);
 	$pdf->AddPage();
 
 	# Logo de la empresa formato png #
@@ -120,10 +120,10 @@
 	$pdf->SetFillColor(23,83,201);
 	$pdf->SetDrawColor(23,83,201);
 	$pdf->SetTextColor(255,255,255);
-	$pdf->Cell(149,8,utf8_decode("Descripción"),1,0,'C',true);
+	$pdf->Cell(140,8,utf8_decode("Descripción"),1,0,'C',true);
 	// $pdf->Cell(15,8,utf8_decode("Cant."),1,0,'C',true);
 	// $pdf->Cell(25,8,utf8_decode("Precio"),1,0,'C',true);
-	// $pdf->Cell(19,8,utf8_decode("Desc."),1,0,'C',true);
+	$pdf->Cell(19,8,utf8_decode("Desc."),1,0,'C',true);
 	$pdf->Cell(32,8,utf8_decode("Subtotal"),1,0,'C',true);
 
 	$pdf->Ln(8);
@@ -134,10 +134,10 @@
 
 
 	/*----------  Detalles de la tabla  ----------*/
-	$pdf->Cell(149,7,utf8_decode($detallepago["concepto"]),'L',0,'C');
+	$pdf->Cell(140,7,utf8_decode(ucwords($detallepago["concepto"])),'L',0,'C');
 	// $pdf->Cell(15,7,utf8_decode("7"),'L',0,'C');
 	// $pdf->Cell(25,7,utf8_decode("$10 USD"),'L',0,'C');
-	// $pdf->Cell(19,7,utf8_decode("$0.00 USD"),'L',0,'C');
+	$pdf->Cell(19,7,utf8_decode("0 %"),'L',0,'C');
 	$pdf->Cell(32,7,utf8_decode("S/ ".$detallepago["total"]),'LR',0,'C');
 	$pdf->Ln(7);
 	/*----------  Fin Detalles de la tabla  ----------*/
@@ -148,7 +148,7 @@
 	
 	# Impuestos & totales #
 	$pdf->Cell(100,7,utf8_decode(''),'T',0,'C');
-	$pdf->Cell(15,7,utf8_decode(''),'T',0,'C');
+	$pdf->Cell(25,7,utf8_decode(''),'T',0,'C');
 	$pdf->Cell(32,7,utf8_decode("MONTO ASIGNADO"),'T',0,'C');
 	$pdf->Cell(34,7,utf8_decode("S/ ".$detallepago["total"]),'T',0,'C');
 
@@ -162,7 +162,7 @@
 	$pdf->Ln(7);
 
 	$pdf->Cell(100,7,utf8_decode(''),'',0,'C');
-	$pdf->Cell(15,7,utf8_decode(''),'',0,'C');
+	$pdf->Cell(25,7,utf8_decode(''),'',0,'C');
 	$pdf->Cell(32,7,utf8_decode("MONTO A PAGAR"),'T',0,'C');
 	$pdf->Cell(34,7,utf8_decode("S/ ".$detallepago["total"]),'T',0,'C');
 

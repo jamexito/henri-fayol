@@ -20,7 +20,7 @@ class TablaPagos
 	    $valor = null;
 
 	    $pagos = OperacionesControlador::MostrarPagosC($item, $valor);		
-// var_dump($pagos);exit();
+		// var_dump($pagos);exit();
 	    $datosJson = '{
 
 			  "data": [';
@@ -46,16 +46,18 @@ class TablaPagos
 
                     $aula = SeccionesControlador::VerSeccionC($item4,$valor4);
 
+                    $botones = "";
+
 			  		/*============================================
 			  		=            TRAEMOS LAS ACCIONES            =
 			  		============================================*/
-			  		if (isset($_GET["perfilOculto"]) && $_GET["perfilOculto"] == "1"){
+			  		if (isset($_GET["darkcode"]) && $_GET["darkcode"] === "1"){
 
                         $botones = "<button class='btn btn-success btnImprimirComprobante' codigoPago='".$pagos[$i]["idpago"]."' idAlumno='".$alumnos[0]['idalumno']."' idUser='".$pagos[$i]['idusuario']."' title='Descargar PDF'><i class='fa fa-file-pdf'></i></button><button class='btn btn-danger anularComprobante' style='margin-left: 5px' idComprobante='".$pagos[$i]["idpago"]."' title='Anular comprobante' data-toggle='modal' data-target='.btn-anular-pago'><i class='fa fa-trash'></i></button>";
 
 			  		}else{
 
-                        /*$botones = "<button class='btn btn-success btnImprimirComprobante' codigoPago='".$pagos[$i]["idpago"]."' idAlumno='".$alumnos[0]['idalumno']."' idUser='".$pagos[$i]['idusuario']."' title='Descargar PDF'><i class='fa fa-file-pdf'></i></button><button class='btn btn-danger anularComprobante' style='margin-left: 4px' idComprobante='".$pagos[$i]["idpago"]."' title='Anular comprobante' data-toggle='modal' data-target='.btn-anular-pago'><i class='fa fa-trash'></i></button>";*/
+                        $botones = "<button class='btn btn-success btnImprimirComprobante center-block' codigoPago='".$pagos[$i]["idpago"]."' idAlumno='".$alumnos[0]['idalumno']."' idUser='".$pagos[$i]['idusuario']."' title='Descargar PDF'><i class='fa fa-file-pdf'></i></button>";
 
 			  		}
 			  		

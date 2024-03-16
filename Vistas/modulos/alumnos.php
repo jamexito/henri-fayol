@@ -28,18 +28,16 @@
 </section>
 
 <section class="content">
-		
-		<?php 
 
-		if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) {
-			echo '<div class="box-header">
+	<div class="box-header">
 
-					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#crearAlumno">Ingresar Alumno</button>
+		<?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2): ?>			
+			<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#crearAlumno">Ingresar Alumno</button>
+		<?php endif ?>
 
-				</div>';
-		}
-		
-		?>
+		<a class="btn btn-success btn-lg" href="Vistas/includes/excelalumnos.php">Descargar Reporte</a>
+
+	</div>
 			
 	<table class="table table-bordered table-hover table-striped tablas">
 		
@@ -56,62 +54,70 @@
 				<th>Estado</th>
 				<th>Acciones</th>
 				
-
 			</tr>
 
 		</thead>
-
 		<tbody>
 
 			<?php 
-
+      
 				$item=null;
-
 				$valor=null;
 
-				$resultado = AlumnosControlador::VerAlumnosC($item, $valor);
-				
-				foreach ($resultado as $key => $value) {
+				$resultadoAl = AlumnosControlador::VerAlumnosC($item, $valor);
 
-					/**HABILITADO O DESHABILITADO*/
-					if($value["estado"] == 1){
-						$estado = '<button class="btn btn-success btnStatus" title="Habilitado" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-check-circle"></i></button>';
-					}else if($value["estado"] == 2){
-						$estado = '<button class="btn btn-warning btnStatus" title="Espera" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-exclamation-triangle"></i></button>';
-					}else{
-						$estado = '<button class="btn btn-danger btnStatus" title="Deshabilitado" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-times-circle"></i></button>';
-					}
+			?>
 
-					/*BOTONES*/
-					if ($_SESSION["rol"] == 1) {
-						$boton =  '<button class="btn btn-primary btnEditarAlumno" idAlumno="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-edit-alumno" title="Editar"><i class="fa fa-edit"></i></button> 
-						<button class="btn btn-success btnVerPerfilAlumno" idAlumnoPefilVer="'.$value["idalumno"].'" title="Ver perfil del alumno"><i class="fa fa-eye"></i></button>
-						<button type="button" class="btn btn-info btnEditarAulaAlumno" idAlumnoAula="'.$value["idalumno"].'" data-toggle="modal" data-target=".btnAulaAlumno"><i class="fa fa-share"></i></button>';					
-					}else{	
-						$boton =  '<button class="btn btn-success btnVerAlumno" idAlumnoVer="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-info-alumno" title="Ver Información completa"><i class="fa fa-eye"></i></button>';	
-					}
+			<?php foreach ($resultadoAl as $key => $value): ?>
 
+				<?php 
 					/*AULAS*/
 					$itemaula = "id";
 					$valoraula = $value["aula_asignada"];
 					
 					$aulas = SeccionesControlador::VerSeccionC($itemaula,$valoraula);
+				?>
 
-					echo '<tr>
-							<td>'.($key+1).'</td>
-							<td>'.$value["dni"].'</td>
-							<td>'.$value["nombres"].'</td>
-							<td>'.$value["apellidos"].'</td>
-							<td>'.$value["telefono"].'</td>
-							<td>'.$aulas[0]["nombres"].'</td>
-							<td class="text-center">'.$estado.'</td>
-							<td>'.$boton.'</td>
-						</tr>';
+				<?php if ($value["estado"] == 1): ?>
+					<?php $estado = '<button class="btn btn-success btnStatus" title="Habilitado" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-check-circle"></i></button>'; ?>
+				<?php elseif ($value["estado"] == 2): ?>
+					<?php $estado = '<button class="btn btn-warning btnStatus" title="Espera" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-exclamation-triangle"></i></button>'; ?>
+				<?php else: ?>
+					<?php $estado = '<button class="btn btn-danger" title="Deshabilitado" disabled><i class="fa fa-times-circle"></i></button>'; ?>
+				<?php endif ?>
 
-										
-				}					
+				<?php if ($_SESSION["rol"] == 1): ?>
+					<?php if ($value["estado"] == 1): ?>
+							<?php $boton =  '<button class="btn btn-primary btnEditarAlumno" idAlumno="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-edit-alumno" title="Editar"><i class="fa fa-edit"></i></button> 
+								<button class="btn btn-success btnVerPerfilAlumno" idAlumnoPefilVer="'.$value["idalumno"].'" title="Ver perfil del alumno"><i class="fa fa-eye"></i></button>
+								<button type="button" class="btn btn-info btnEditarAulaAlumno" idAlumnoAula="'.$value["idalumno"].'" data-toggle="modal" data-target=".btnAulaAlumno"><i class="fa fa-share"></i></button>';  ?>
+							<?php elseif ($value["estado"] == 2): ?>
+							    <?php $boton =  '<button class="btn btn-primary btnEditarAlumno" idAlumno="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-edit-alumno" title="Editar"><i class="fa fa-edit"></i></button> 
+								<button class="btn btn-success btnVerPerfilAlumno" idAlumnoPefilVer="'.$value["idalumno"].'" title="Ver perfil del alumno"><i class="fa fa-eye"></i></button>
+								<button type="button" class="btn btn-info"  disabled><i class="fa fa-share"></i></button>';  ?>
+						<?php else: ?>
+							<?php $boton = '<button class="btn btn-primary btnEditarAlumno" idAlumno="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-edit-alumno" title="Editar"><i class="fa fa-edit"></i></button> 
+								<button class="btn btn-success" disabled><i class="fa fa-eye"></i></button>
+								<button type="button" class="btn btn-info"  disabled><i class="fa fa-share"></i></button>'; ?>
+						<?php endif ?>
+					<?php ?>
+				<?php else: ?>
+					<?php $boton =  '<button class="btn btn-success btnVerAlumno" idAlumnoVer="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-info-alumno" title="Ver Información completa"><i class="fa fa-eye"></i></button>'; ?>
+				<?php endif ?>
 
-			?>						
+
+				<tr>
+					<td><?php echo ($key+1); ?></td>
+					<td><?php echo $value["dni"]; ?></td>
+					<td><?php echo $value["nombres"]; ?></td>
+					<td><?php echo $value["apellidos"]; ?></td>
+					<td><?php echo $value["telefono"]; ?></td>
+					<td><?php echo $aulas[0]["nombres"]; ?></td>
+					<td class="text-center"><?php echo $estado; ?></td>
+					<td><?php echo $boton; ?></td>
+				</tr>
+				
+			<?php endforeach ?>					
 
 		</tbody>
 		<!-- <button class="btn btn-success btnVerAlumno" idAlumnoVer="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-info-alumno" title="Ver Información completa"><i class="fa fa-eye"></i></button> -->
@@ -219,8 +225,16 @@
 						<div class="form-group">
 
 							<input type="hidden" id="idAlumnoStatus" name="idAlumnoStatus">
-							<input type="hidden" id="StatusAlumno" name="StatusAlumno">
+							<input type="hidden" id="mesesAlumnosE" name="mesesAlumnosE">
 							<p class="pregunta text-center"></p>
+							<hr>
+
+							<select name="StatusAlumno" id="StatusAlumno" class="form-control">
+								<option selected disabled>Selecciona una opción...</option>
+								<option value="1">Activado</option>
+								<!-- <option value="2">Pendiente</option> -->
+								<option value="0">Desactivado</option>
+							</select>							
 							
 						</div>
 
@@ -266,15 +280,19 @@
 					
 					<div class="box-body">
 
-						<!-- <div class="row"> -->
-
-							<!-- <div class="col-md-6"> -->
-
 								<div class="form-group">
 
 									<label>Documento:</label>
 
-									<input type="number" class="form-control" name="dni" id="dniNuevo" required>				
+									<div class="row">
+										
+										<div class="col-md-6">
+											
+											<input type="number" class="form-control" name="dni" id="dniNuevo" required>	
+
+										</div>
+
+									</div>			
 
 								</div>
 
@@ -306,13 +324,17 @@
 
 									<label>Teléfono:</label>
 
-									<input type="number" class="form-control" name="telefono" required>				
+									<div class="row">
+										
+										<div class="col-md-6">
+											
+											<input type="number" class="form-control" name="telefono" required>
+
+										</div>
+
+									</div>			
 
 								</div>
-
-							<!-- </div> -->
-
-							<!-- <div class="col-md-6"> -->
 								
 								<div class="form-group">
 
@@ -326,27 +348,88 @@
 
 									<label>Seleccionar Aula:</label>
 
-									<select class="form-control" name="aula">
-
-										<option selected disabled>Seleccionar Aula...</option>
-
-										<?php 
-
-											$item = null;
+									<div class="row">
 										
-											$valor = null;
+										<div class="col-md-6">
+											
+											<select class="form-control" name="aula" id="aula">
 
-											$aulas = SeccionesControlador::VerSeccionC($item, $valor);
+												<option selected disabled>Seleccionar Aula...</option>
 
-											foreach ($aulas as $key => $value) {
+												<?php 
+
+													$item = null;
 												
-												echo '<option value="'.$value["id"].'">'.$value["nombres"].'</option>';
+													$valor = null;
 
-											}
+													$aulas = SeccionesControlador::VerSeccionC($item, $valor);
 
-										?>
+													foreach ($aulas as $key => $value) {
+														
+														echo '<option value="'.$value["id"].'">'.$value["nombres"].'</option>';
 
-									</select>
+													}
+
+												?>
+
+											</select>
+
+										</div>
+
+									</div>
+
+								</div>
+
+								<div class="form-group">
+
+					                <label>Meses:</label>
+					                <select class="form-control select2" multiple="multiple" name="meses[]" data-placeholder="Selecciona los meses"
+					                        style="width: 100%;">
+					                  <option value="enero">Enero</option>
+					                  <option value="febrero">Febrero</option>
+					                  <option value="marzo">Marzo</option>
+					                  <option value="abril">Abril</option>
+					                  <option value="mayo">Mayo</option>
+					                  <option value="junio">Junio</option>
+					                  <option value="julio">Julio</option>
+					                  <option value="agosto">Agosto</option>
+					                  <option value="setiembre">Setiembre</option>
+					                  <option value="octubre">Octubre</option>
+					                  <option value="noviembre">Noviembre</option>
+					                  <option value="diciembre">Diciembre</option>
+					                </select>
+
+					            </div>
+
+								<div class="form-group">
+
+									<div class="row">
+										
+										<div class="col-md-4 pull-left">
+											
+											<label>Pensión:</label>
+
+											<input type="number" class="form-control" name="pension" id="pension" required>
+
+										</div>
+
+										<div class="col-md-4 pull-center">
+											
+											<label>Descuento (%):</label>
+
+											<input type="number" class="form-control" name="descuento" id="descuento">
+
+										</div>
+
+										<div class="col-md-4 pull-right">
+											
+											<label>Pago final:</label>
+
+											<input type="number" class="form-control" name="pago_final" id="pago_final">
+
+										</div>
+
+									</div>				
 
 								</div>
 
@@ -416,8 +499,16 @@
 									<input type="hidden" name="idAlumnoEA" id="idAlumnoEA">
 									<label>Documento:</label>
 
-									<input type="number" class="form-control" id="dniEA" name="dniEA" required>				
+									<!-- <input type="number" class="form-control" id="dniEA" name="dniEA" required>				 -->
+									<div class="row">
+										
+										<div class="col-md-6">
+											
+											<input type="number" class="form-control" name="dniEA" id="dniEA" required readonly>	
 
+										</div>
+
+									</div>
 								</div>
 
 								<div class="form-group">
@@ -452,7 +543,17 @@
 
 									<label>Teléfono:</label>
 
-									<input type="number" class="form-control" id="telefonoEA" name="telefonoEA" required>				
+									<!-- <input type="number" class="form-control" id="telefonoEA" name="telefonoEA" required> -->
+
+									<div class="row">
+										
+										<div class="col-md-6">
+											
+											<input type="number" class="form-control" id="telefonoEA" name="telefonoEA" required>
+
+										</div>
+
+									</div>			
 
 								</div>
 								
@@ -460,7 +561,61 @@
 
 									<label>Apoderado:</label>
 
-									<input type="text" class="form-control" id="apoderadoEA" name="apoderadoEA" required>				
+									<input type="text" class="form-control" id="apoderadoEA" name="apoderadoEA" required>
+									<input type="hidden" name="EditMes" id="EditMes">			
+
+								</div>
+
+								<div class="form-group MesesE" id="mesesE">
+
+					                <label>Meses:</label>
+					                <select class="form-control select2 mounthE" multiple="multiple" name="mesesEdit[]" data-placeholder="Selecciona los meses"
+					                        style="width: 100%;">
+					                  <option value="enero">Enero</option>
+					                  <option value="febrero">Febrero</option>
+					                  <option value="marzo">Marzo</option>
+					                  <option value="abril">Abril</option>
+					                  <option value="mayo">Mayo</option>
+					                  <option value="junio">Junio</option>
+					                  <option value="julio">Julio</option>
+					                  <option value="agosto">Agosto</option>
+					                  <option value="setiembre">Setiembre</option>
+					                  <option value="octubre">Octubre</option>
+					                  <option value="noviembre">Noviembre</option>
+					                  <option value="diciembre">Diciembre</option>
+					                </select>
+					                
+					            </div>
+
+								<div class="form-group">
+
+									<div class="row">
+										
+										<div class="col-md-4 pull-left">
+											
+											<label>Pensión:</label>
+
+											<input type="number" class="form-control" name="pensionEA" id="pensionEA" required>
+
+										</div>
+
+										<div class="col-md-4 pull-center">
+											
+											<label>Descuento (%):</label>
+
+											<input type="number" class="form-control" name="descuentoEA" id="descuentoEA">
+
+										</div>
+
+										<div class="col-md-4 pull-right">
+											
+											<label>Pago final:</label>
+
+											<input type="number" class="form-control" name="pago_finalEA" id="pago_finalEA">
+
+										</div>
+
+									</div>				
 
 								</div>
 
@@ -511,7 +666,6 @@
 <!--==================================
 =          VER INFO ALUMNO           =
 ===================================-->
-
 <div class="modal fade btn-info-alumno" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   	<div class="modal-dialog" role="document">
 		<div class="modal-content">

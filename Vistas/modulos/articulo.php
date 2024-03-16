@@ -1,12 +1,12 @@
 <section class="content-header">
 	
-	<h1>Artículos</h1>
+	<h1>Inventario</h1>
 
 	<ol class="breadcrumb">
 
       <li><a href="inicio"><i class="fas fa-home"></i> Inicio</a></li> 
 
-      <li class="active">Artículos</li>
+      <li class="active">Inventario</li>
 
     </ol>
 
@@ -14,17 +14,20 @@
 
 <section class="content">
 
-	<?php 
+	<div class="box-header">
 
-		if ($_SESSION['rol'] == 1) {
-			echo '<div class="box-header">
+		<?php if ($_SESSION['rol'] == 1): ?>
 
-					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-registrar-pago-lg"> Registrar </button>
+			<a href="http://localhost/sistema_hf/registro_ingreso">
+				<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-registrar-pago-lg"> Registrar Ingreso</button>
+			</a>
+			<a href="http://localhost/sistema_hf/registro_salida">
+				<button class="btn btn-success btn-lg" data-toggle="modal" data-target=".bs-registrar-pago-lg"> Registrar Salida</button>
+			</a>
 
-				</div>';
-		}
+		<?php endif ?>
 
-	?>
+	</div>
 			
 	<table class="table table-bordered table-hover table-striped tablas">
 		
@@ -35,8 +38,7 @@
 				<th style="width: 50px">Nº</th>
 				<th style="width: 500px">Nombre del artículo</th>
 				<th>Precio</th>						
-				<th style="width: 500px">Fecha de registro</th>						
-				<th>Estado</th>
+				<th style="width: 500px">Fecha de registro</th>
 				<th>Acciones</th>	
 
 			</tr>
@@ -50,7 +52,6 @@
 				<td>Buzos de uniforme</td>
 				<td>36.00</td>
 				<td>12-01-2023</td>
-				<td class="text-center"><button class="btn btn-success"><i class="fa fa-check-circle"></i></button></td>
 				<td>
 					<a href="" class="btn btn-danger">Eliminar</a>
 				</td>

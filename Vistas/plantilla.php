@@ -16,7 +16,7 @@
 
 	<?php include "includes/scripts.php"; ?>
 
-	<title>I.E Henry Fayol</title>
+	<title>I.E.P. Henri Fayol</title>
 
 </head>
 <body class="hold-transition login-page">	
@@ -34,21 +34,25 @@
 			       
 			       $url = explode("/", $_GET["url"]);
 
-			        if( $url[0] == "inicio" || 
-						$url[0] == "salir" || 
-						$url[0] == "usuarios" || 
-						$url[0] == "docentes" ||
-						$url[0] == "seccion" || 
-						$url[0] == "pagos" ||
-						$url[0] == "realizarpago" ||
-						$url[0] == "operacion" || 
-						$url[0] == "comprobante" || 
-						$url[0] == "perfil" ||
-						$url[0] == "perfilalumno" ||
-						$url[0] == "alumnos" ||
-						$url[0] == "inventario" ||
-						$url[0] == "articulo" ||
-						$url[0] == "alumnosaula") 
+			      if( 
+			      	$url[0] == "inicio" || 
+							$url[0] == "salir" || 
+							$url[0] == "usuarios" || 
+							$url[0] == "docentes" ||
+							$url[0] == "seccion" || 
+							$url[0] == "pagos" ||
+							$url[0] == "realizarpago" ||
+							$url[0] == "operacion" || 
+							$url[0] == "comprobante" || 
+							$url[0] == "perfil" ||
+							$url[0] == "perfilalumno" ||
+							$url[0] == "alumnos" ||
+							$url[0] == "inventario" ||
+							$url[0] == "articulo" ||
+							$url[0] == "registro_ingreso" ||
+							$url[0] == "registro_salida" ||
+							$url[0] == "alumnosaula"
+						) 
 					{
 			         
 			         include "modulos/".$url[0].".php";
@@ -86,6 +90,9 @@
 <script src="Vistas/dist/js/demo.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+<!-- Select2 -->
+<script src="Vistas/bower_components/select2/dist/js/select2.full.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
 
 <!--Plugging para personalizar el datatable Datatables -->
 <!-- <script src="Vistas/bower_components/datatables.net/js/jquery.dataTables.js"></script> -->

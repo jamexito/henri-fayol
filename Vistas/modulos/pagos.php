@@ -14,17 +14,17 @@
 
 <section class="content">
 
-	<?php 
+	<div class="box-header">
 
-		if ($_SESSION['rol'] == 1) {
-			echo '<div class="box-header">
+		<?php if ($_SESSION['rol'] == 1): ?>
 
-					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-registrar-pago-lg"> Registrar Pago</button>
+			<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-registrar-pago-lg"> Registrar Pago</button>
 
-				</div>';
-		}
+			<a class="btn btn-success btn-lg" href="Vistas/includes/excelpagos.php">Descargar Reporte</a>
+			
+		<?php endif ?>	
 
-	?>
+	</div>
 			
 	<table class="table table-bordered table-hover table-striped tablasPagos">
 		
@@ -46,7 +46,7 @@
 
 	</table>
 
-	<input type="hidden" value="<?php echo $_SESSION['rol']; ?>" id="perfilOculto">
+	<input type="hidden" value="<?php echo $_SESSION['rol']; ?>" id="darkcode">
 
 </section>
 
@@ -56,7 +56,7 @@
 <div class="modal fade bs-registrar-pago-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog" role="document">
   	<div class="modal-content">
-		<form method="POST" autocomplete="off">
+		<form method="POST" autocomplete="off" id="formRegister">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span></button>
@@ -78,57 +78,82 @@
 
 									$ventas = OperacionesControlador::MostrarPagosC($itemventa, $valorventa);
 									
-									if (!$ventas) {
-										
-										echo '<input type="text" class="form-control" id="pagoN" name="pagoN" value="1001" readonly style="width:200px">';
-
-									}else{
-
-										foreach ($ventas as $key => $valueventa) {
-
-										}
-
-										$codigo = $valueventa["idpago"] + 1;
-
-										echo '<input type="text" class="form-control" id="pagoN" name="pagoN" value="'.$codigo.'" readonly style="width:200px">';
-
-									}
+									// if (!$ventas) {										
+									// 	echo '<input type="text" class="form-control" id="pagoN" name="pagoN" value="1001" readonly style="width:200px">';
+									// }else{
+									// 	foreach ($ventas as $key => $valueventa) {
+									// 	}
+									// 	$codigo = $valueventa["idpago"] + 1;
+									// 	echo '<input type="text" class="form-control" id="pagoN" name="pagoN" value="'.$codigo.'" readonly style="width:200px">';
+									// }
 
 								?>
+
+								<?php if (!$ventas): ?>
+
+									<input type="text" class="form-control" id="pagoN" name="pagoN" value="1001" readonly style="width:200px">
+
+								<?php else: ?>
+									<?php foreach ($ventas as $key => $valueventa): ?>
+										
+									<?php endforeach ?>
+									<?php $codigo = $valueventa["idpago"] + 1; ?>
+									<input type="text" class="form-control" id="pagoN" name="pagoN" value="<?php echo $codigo; ?>" readonly style="width:200px">
+								<?php endif ?>
 
 							</div>
 
 							<div class="form-group">
 								<label>Alumno:</label>
-								<select class="form-control selectpicker" data-show-subtext="true" data-live-search="true" name="idalumno">
+								<select class="form-control selectpicker" data-show-subtext="true" data-live-search="true" name="idalumno" id="idalumno">
 									<option disabled selected>Seleccione una opcion...</option>
 									<?php
+									
 										$itemalumno = null;
 										$valoralumno = null;
 
 										$alumnos = AlumnosControlador::VerAlumnosC($itemalumno, $valoralumno);
-										foreach ($alumnos as $key => $value) 
-										{
-											echo '<option value="'.$value["idalumno"].'" data-subtext="'.$value["dni"].'">'.$value["nombres"].' '.$value["apellidos"].'</option>';
-										}
-									?>          
+						
+									?> 
+
+									<?php foreach ($alumnos as $key => $value): ?>
+										<?php if ($value["estado"] != 0): ?>
+											<option value="<?php echo $value["idalumno"]; ?>" data-subtext="<?php echo $value["dni"]; ?>"><?php echo $value["nombres"]; ?> <?php echo $value["apellidos"]; ?></option>	
+										<?php endif ?>										
+									<?php endforeach ?>         
 								</select>				
 							</div>
 
 							<div class="form-group">
-								<label>Concepto:</label>
-								<textarea class="form-control" rows="3" placeholder="Ingrese un concepto ..." style="height: 92px;" name="concepto"></textarea>
+								<label>Mensualidad :</label>
+								<select class="form-control" name="mensualidad" id="mensualidad">
+									<option selected disabled>Selecciona un a opción...</option>
+								</select>	
 							</div>							
 						</div>				
 					</div>
-					<div class="row">
-						<div class="col-md-4 pull-right">
-							<div class="form-group">
-								<label>Monto:</label>
-								S/ <input type="number" class="form-control" name="monto" id="monto">
-							</div>							
-						</div>				
-					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-4">	
+							</div>
+							<?php if ($_SESSION["rol"] !== "1"): ?>
+								<div class="col-md-4 pull-center">
+									<label>Descuento %:</label>
+									<input type="number" class="form-control" name="descuento" id="descuento" readonly>			
+								</div>	
+							<?php else: ?>
+								<div class="col-md-4 pull-center">
+									<label>Descuento %:</label>
+									<input type="number" class="form-control" name="descuento" id="descuento">			
+								</div>
+							<?php endif ?>
+							
+							<div class="col-md-4 pull-right">
+								<label>Monto S/:</label>
+								<input type="number" class="form-control" name="monto" id="monto">		
+							</div>				
+						</div>
+				  </div>
 				</div>
 			</div>
 			<div class="modal-footer">

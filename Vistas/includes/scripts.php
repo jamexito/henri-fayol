@@ -12,13 +12,16 @@
 <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="Vistas/dist/css/skins/_all-skins.min.css">
 <!-- Select-->
-<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+<!-- <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'> -->
+<link rel="stylesheet" href="Vistas/bower_components/bootstrap/dist/css/bootstrap.min.css">
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css'>
+
+<!-- Select2 -->
+<link rel="stylesheet" href="Vistas/bower_components/select2/dist/css/select2.min.css">
 
 <!--Plugging para personalizar el datatable Datatables -->    
 <link rel="stylesheet" href="Vistas/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" href="Vistas/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
-
 
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">

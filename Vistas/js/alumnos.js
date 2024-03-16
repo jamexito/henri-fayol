@@ -1,3 +1,4 @@
+$('.select2').select2();
 /*=============================================
 =       SUBIENDO LA FOTO DEL ALUMNO           =
 =============================================*/
@@ -76,7 +77,7 @@ $(".btnEditarAlumno").click(function() {
 		processData: false,
 		dataType: "json",
 		success: function(respuesta){			
-			// console.log(respuesta);
+			// console.log(respuesta[0]["estado"]);
 
 			$("#idAlumnoEA").val(respuesta[0]["idalumno"]);
 			$("#dniEA").val(respuesta[0]["dni"]);
@@ -85,8 +86,37 @@ $(".btnEditarAlumno").click(function() {
 			$("#direccionEA").val(respuesta[0]["direccion"]);
 			$("#telefonoEA").val(respuesta[0]["telefono"]);
 			$("#apoderadoEA").val(respuesta[0]["apoderado"]);
-			$("#aulaEA").val(respuesta[0]["aula_asignada"]);
+			if (respuesta[0]["estado"] == 0) 
+			{
+				$("#mesesE").show();
+			}else if (respuesta[0]["estado"] == 1) {
+				$("#mesesE").hide();
+				$("#EditMes").val(JSON.parse(respuesta[0]["meses"]));
+			}
+			$("#pensionEA").val(respuesta[0]["pension"]);
+			$("#pensionEA").attr("readonly",true);
+			if (respuesta[0]["descuento"] == 0.00) {
+				$("#descuentoEA").val("");
+			}
+			// $("#descuentoEA").val(respuesta[0]["descuento"]);
+			$("#pago_finalEA").val(respuesta[0]["pension_final"]);
 			$("#imagenAlumno").val(respuesta[0]["foto"]);
+
+			/*==================================================
+			=       SELECCIONAR EL MONTO DE LA PENSION         =
+			==================================================*/
+			$("#descuentoEA").change(function(){
+
+				var pensionA = Number($("#pensionEA").val());
+				var descuentoA = Number($(this).val());
+				var valor_descA = descuentoA / 100;
+
+				var pension_finalA = pensionA - (pensionA * valor_descA);
+
+				$("#pago_finalEA").val(pension_finalA);
+				$("#pago_finalEA").attr("readonly",true);
+
+			})
 
 			if(respuesta[0]["foto"] == null || respuesta[0]["foto"] == "")
 			{
@@ -104,7 +134,6 @@ $(".btnEditarAlumno").click(function() {
 /*=============================================
 REVISAR SI EL ALUMNO YA ESTÁ REGISTRADO
 =============================================*/
-
 $("#dniNuevo").change(function(){
 
 	$(".alert").remove();
@@ -214,7 +243,7 @@ $(".btnVerAlumno").click(function() {
 		processData: false,
 		dataType: "json",
 		success: function(respuesta){			
-			// console.log(respuesta[0]["foto"]);
+			// console.log(respuesta[0]["dni"]);
 			
 			if (respuesta[0]["foto"] == null || respuesta[0]["foto"] == "") {
 				$("#fotoAlumno").attr("src","Vistas/img/users/anonymous.png");
@@ -284,16 +313,12 @@ $(".btnStatus").click(function() {
 			success: function(respuesta){			
 				// console.log(respuesta);
 				$("#idAlumnoStatus").val(respuesta[0]["idalumno"]);
+				$("#mesesAlumnosE").val(respuesta[0]["meses"]);
 
 				if (respuesta[0]["estado"] == 2) {					
-					$(".pregunta").html("¿Deseas aprobar al alumno?");
-					$("#StatusAlumno").val("1");
+					$(".pregunta").html("El alumno esta en modo pendiente");
 				}else if (respuesta[0]["estado"] == 1) {
-					$(".pregunta").html("¿Deseas desactivar al alumno?");
-					$("#StatusAlumno").val("0");
-				}else{
-					$(".pregunta").html("¿Deseas volver a activar al alumno?");
-					$("#StatusAlumno").val("1");
+					$(".pregunta").html("El alumno esta activado");
 				}
 	
 			}
@@ -326,3 +351,20 @@ $(document).on("click", ".btnImprimirComprobante", function(){
 	window.open("Vistas/tcpdf/comprobante.php?idAlumno="+idAlumno+"&idUser="+idUser+"&codigoPago="+codigoPago,"_blank");
 
 })
+
+/*==================================================
+=       SELECCIONAR EL MONTO DE LA PENSION         =
+==================================================*/
+$("#descuento").change(function(){
+
+	var pension = Number($("#pension").val());
+	var descuento = Number($(this).val());
+	var valor_desc = descuento / 100;
+
+	var pension_final = Number(pension - (pension * valor_desc));
+
+	$("#pago_final").val(pension_final);
+
+})
+
+

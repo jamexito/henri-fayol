@@ -63,30 +63,6 @@ class OperacionesModelo extends ConexionDB
 		$pdo = null;
 	}
 
-	static public function RegistrarDetallePagoM($tabladetallepago,$datosdetallepago)
-	{
-		$pdo = ConexionDB::conectarDB()->prepare("INSERT INTO $tabladetallepago (idpago,concepto,total,fecha_registro) VALUES (:idpago,:concepto,:total,:fecha_registro)");
-
-		$pdo->bindParam(":idpago", $datosdetallepago["idpago"], PDO::PARAM_INT);
-		$pdo->bindParam(":concepto", $datosdetallepago["concepto"], PDO::PARAM_STR);
-		$pdo->bindParam(":total", $datosdetallepago["total"], PDO::PARAM_STR);
-		$pdo->bindParam(":fecha_registro", $datosdetallepago["fecha_registro"], PDO::PARAM_STR);
-
-		if($pdo->execute()){
-
-			return "ok";	
-
-		}else{
-
-			return "error";
-		
-		}
-
-		$pdo->close();
-		
-		$pdo = null;
-	}
-
 	static public function RealizarPagoM($tablaBD, $datos)
 	{
 		
@@ -110,6 +86,30 @@ class OperacionesModelo extends ConexionDB
 		
 		$pdo = null;
 
+	}
+
+	static public function RegistrarDetallePagoM($tabladetallepago,$datosdetallepago)
+	{
+		$pdo = ConexionDB::conectarDB()->prepare("INSERT INTO $tabladetallepago (idpago,concepto,total,fecha_registro) VALUES (:idpago,:concepto,:total,:fecha_registro)");
+
+		$pdo->bindParam(":idpago", $datosdetallepago["idpago"], PDO::PARAM_INT);
+		$pdo->bindParam(":concepto", $datosdetallepago["concepto"], PDO::PARAM_STR);
+		$pdo->bindParam(":total", $datosdetallepago["total"], PDO::PARAM_STR);
+		$pdo->bindParam(":fecha_registro", $datosdetallepago["fecha_registro"], PDO::PARAM_STR);
+
+		if($pdo->execute()){
+
+			return "ok";	
+
+		}else{
+
+			return "error";
+		
+		}
+
+		$pdo->close();
+		
+		$pdo = null;
 	}
 
 	static public function MostrarPagoM($tablaBD, $columna, $valor)
