@@ -63,7 +63,7 @@
 
 	$pdf->Ln(6);
 
-	$pdf->Cell(150,9,utf8_decode("Teléfono: 963 235 125"),0,0,'L');
+	$pdf->Cell(150,9,utf8_decode("Teléfono: 963 787 947"),0,0,'L');
 
 	$pdf->Ln(6);
 

@@ -78,10 +78,14 @@
 					$aulas = SeccionesControlador::VerSeccionC($itemaula,$valoraula);
 				?>
 
-				<?php if ($value["estado"] == 1): ?>
-					<?php $estado = '<button class="btn btn-success btnStatus" title="Habilitado" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-check-circle"></i></button>'; ?>
-				<?php elseif ($value["estado"] == 2): ?>
-					<?php $estado = '<button class="btn btn-warning btnStatus" title="Espera" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-exclamation-triangle"></i></button>'; ?>
+				<?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2): ?>
+					<?php if ($value["estado"] == 1): ?>
+						<?php $estado = '<button class="btn btn-success btnStatus" title="Habilitado" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-check-circle"></i></button>'; ?>
+					<?php elseif ($value["estado"] == 2): ?>
+						<?php $estado = '<button class="btn btn-warning btnStatus" title="Espera" idAlumnoSt="'.$value["idalumno"].'" data-toggle="modal" data-target=".btn-delete-alumno"><i class="fa fa-exclamation-triangle"></i></button>'; ?>
+					<?php else: ?>
+						<?php $estado = '<button class="btn btn-danger" title="Deshabilitado" disabled><i class="fa fa-times-circle"></i></button>'; ?>
+					<?php endif ?>
 				<?php else: ?>
 					<?php $estado = '<button class="btn btn-danger" title="Deshabilitado" disabled><i class="fa fa-times-circle"></i></button>'; ?>
 				<?php endif ?>

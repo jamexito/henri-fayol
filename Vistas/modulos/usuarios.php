@@ -28,33 +28,29 @@
 </section>
 
 <section class="content">
-		
-	<?php 
 
-		if ($_SESSION['rol'] == 1) {
-			echo '<div class="box-header">
+	<?php if ($_SESSION['rol'] == 1): ?>
+		<div class="box-header">
 
-					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#CrearUsuario"><i class="fa fa-user-plus"></i> Crear Usuario</button>
+			<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#CrearUsuario"><i class="fa fa-user-plus"></i> Crear Usuario</button>
 
-				</div>';
-		}
-
-	?>
+		</div>
+	<?php endif ?>
 		
 	<table class="table table-bordered table-hover table-striped tablas">
 		
 		<thead>			
 			<tr>
 				
-				<th>Nº</th>
-				<th>Apellidos y Nombres</th>
-				<!-- <th>DNI</th> -->
+				<th style="width: 10px;">Nº</th>
+				<th style="width: 300px;">Apellidos y Nombres</th>
+				<th>DNI</th>
 				<!-- <th>Dirección</th> -->
 				<th>Teléfono</th>
-				<th>Foto</th>
+				<th style="width: 10px;">Foto</th>
 				<th>Usuario</th>
 				<th>Rol</th>
-				<!-- <th>Fecha de Ingreso</th> -->
+				<th>Ultimo Log</th>
 				<th>Estado</th>
 				<th>Acciones</th>
 
@@ -103,10 +99,12 @@
 				
 						<td>'.($key+1).'</td>
 						<td>'.$value["apellidos"].' '.$value["nombres"].'</td>
+						<td>'.$value["dni"].'</td>
 						<td>'.$value["telefono"].'</td>
 						<td>'.$foto.'</td>
 						<td>'.$value["usuario"].'</td>
 						<td>'.$verEstado["nombre"].'</td>			
+						<td>'.$value["ultimo_logueo"].'</td>			
 						<td>'.$estado.'</td>
 						<td>							
 							<div class="btn-group">		

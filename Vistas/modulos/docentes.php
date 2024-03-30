@@ -13,18 +13,16 @@
 </section>
 
 <section class="content">
-		
-	<?php 
 
-		if ($_SESSION['rol'] == 1) {
-			echo '<div class="box-header">
+	<div class="box-header">
 
-					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".mdl-insert-docente">Ingresar Docente</button>
+		<?php if ($_SESSION['rol'] == 1): ?>
 
-				</div>';
-		}
+			<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".mdl-insert-docente">Ingresar Docente</button>
 
-	?>
+		<?php endif ?>
+
+	</div>
 			
 	<table class="table table-bordered table-hover table-striped tablas">
 		
@@ -67,11 +65,11 @@
 
 						}else{
 
-							/*$estado = '<button class="btn btn-danger" title="Deshabilitado"><i class="fa fa-times-circle"></i></button>';
+							// $estado = '<button class="btn btn-danger" title="Deshabilitado"><i class="fa fa-times-circle"></i></button>';
 
-							$boton =  '<button class="btn btn-primary btnEditarDocente" idDocente="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarDocente" title="Editar"><i class="fa fa-edit"></i></button> 
+							$boton =  '<button class="btn btn-primary" disabled><i class="fa fa-edit"></i></button> 
 								<button class="btn btn-success btnVerInfoDocente" idDocenteVer="'.$value["id"].'" data-toggle="modal" data-target=".btn-info-docente" title="Ver Información completa"><i class="fa fa-eye"></i></button>
-								<button type="button" class="btn btn-info" disabled><i class="fa fa-share"></i></button>';*/	
+								<button type="button" class="btn btn-info" disabled><i class="fa fa-share"></i></button>';	
 						}
 
 						/*AULAS*/
@@ -81,9 +79,13 @@
 						$aulas = SeccionesControlador::VerSeccionC($item,$valor);
 
 						if ($value["estado"] == 1 && $value["aula_asignada"] != null) {
-							$aulahabil = '<a href="#" class="verAlumnos" idAula="'.$aulas[0]["id"].'">
+							if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) {
+								$aulahabil = '<a href="#" class="verAlumnos" idAula="'.$aulas[0]["id"].'">
 												<span class="bg-success">'.$aulas[0]["nombres"].'</span>
 											</a>';
+							}else{
+								$aulahabil = '<span>'.$aulas[0]["nombres"].'</span>';
+							}
 							// $nombreaula = $aulas[0]["nombres"];
 						}else{
 

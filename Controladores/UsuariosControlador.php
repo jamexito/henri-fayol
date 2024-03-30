@@ -51,6 +51,7 @@ class UsuariosControlador
 					$_SESSION["telefono"] = $resultado["telefono"];
 					$_SESSION["foto"] = $resultado["foto"];
 					$_SESSION["rol"] = $resultado["rol"];
+					$_SESSION["aula"] = $resultado["aula"];
 					$_SESSION["usuario"] = $resultado["usuario"];
 					$_SESSION["clave"] = $resultado["clave"];
 					$_SESSION["estado"] = $resultado["estado"];

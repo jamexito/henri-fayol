@@ -32,7 +32,7 @@
 	</div>	
 
 	<nav id="menu">
-		<?php if ($_SESSION['id'] != 3): ?>
+		<?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2 || $_SESSION['rol'] == 3 || $_SESSION['rol'] == 4): ?>
 			<ul class="options">
 
 				<li><a href="inicio"> <i class="fas fa-home"></i> Inicio</a></li>
@@ -67,14 +67,24 @@
 
 				<li class="principal">
 
-					<a href="#"><i class="fas fa-building"></i> Grados </a>
+					<?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2): ?>
+						<a href="#"><i class="fas fa-building"></i> Grados </a>
 
-					<ul>
+						<ul>
 
-						<li><a href="#" class="verSeccion" idGrado="1"><i class="fa fa-child"></i> Inicial</a></li>
-						<li><a href="#" class="verSeccion" idGrado="2"><i class="fa fa-server"></i> Primaria</a></li>
+							<li><a href="#" class="verSeccion" idGrado="1"><i class="fa fa-child"></i> Inicial</a></li>
+							<li><a href="#" class="verSeccion" idGrado="2"><i class="fa fa-server"></i> Primaria</a></li>
 
-					</ul>
+						</ul>
+					<?php elseif ($_SESSION['rol'] == 4): ?>
+						<a href="#"><i class="fas fa-building"></i> Aula </a>
+
+						<ul>
+
+							<li><a href="#" class="small-box-footer verAlumnos" idAula="<?php echo $_SESSION['aula'] ?>"></i> Alumnos</a></li>
+
+						</ul>
+					<?php endif ?>
 
 				</li>
 
@@ -89,21 +99,24 @@
 					</ul>
 
 				</li>
+				<?php if ($_SESSION['rol'] == 1): ?>
+				
+					<li class="principal">
 
-				<li class="principal">
+						<a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Inventario </a>
 
-					<a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Inventario </a>
+						<ul>
 
-					<ul>
+							<li><a href="articulo"><i class="fa fa-tasks" aria-hidden="true"></i> Articulos </a></li>
+							<li><a href="ing_articulos"><i class="fa fa-tasks" aria-hidden="true"></i> R. Ingresos </a></li>
+							<li><a href="sal_articulos"><i class="fa fa-tasks" aria-hidden="true"></i> R. Salidas </a></li>
+							<li><a href="inventario"><i class="fa fa-tasks" aria-hidden="true"></i> Inventario </a></li>
 
-						<li><a href="articulo"><i class="fa fa-tasks" aria-hidden="true"></i> Articulos </a></li>
-						<li><a href="ing_articulos"><i class="fa fa-tasks" aria-hidden="true"></i> R. Ingresos </a></li>
-						<li><a href="sal_articulos"><i class="fa fa-tasks" aria-hidden="true"></i> R. Salidas </a></li>
-						<li><a href="inventario"><i class="fa fa-tasks" aria-hidden="true"></i> Inventario </a></li>
+						</ul>
 
-					</ul>
-
-				</li>
+					</li>
+					
+				<?php endif ?>
 
 			</ul>
 		<?php else: ?>

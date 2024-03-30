@@ -16,7 +16,7 @@
 
 	<div class="box-header">
 
-		<?php if ($_SESSION['rol'] == 1): ?>
+		<?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 3): ?>
 
 			<button class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-registrar-pago-lg"> Registrar Pago</button>
 
