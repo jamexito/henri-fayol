@@ -50,18 +50,27 @@
 
 @media screen and (max-width: 320px) {
     header h1 {
-        font-size: 8px !important;
+        font-size: 15px !important;
         margin-left: 0;
+    }
+    .optionsBar span {
+        display: none !important;
+        /* font-size: 1pt !important;
+        margin-left: 1px !important; */
     }
 }
 
-@media screen and (max-width: 377px) {
+@media screen and (max-width: 414px) {
     header h1 {
-        font-size: 12px;
+        font-size: 18px;
     }
+    /* .tittle {
+        font-size: 12px !important;
+    } */
     .optionsBar span {
-        font-size: 10pt !important;
-        margin-left: 10px !important;
+        display: none !important;
+        /* font-size: 1pt !important;
+        margin-left: 1px !important; */
     }
     .divContainer,
     .containerDataEmpresa {
